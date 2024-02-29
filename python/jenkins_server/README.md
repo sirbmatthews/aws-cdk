@@ -1,8 +1,3 @@
-
-# Jenkins Server Project
-
-This is a Jenkins Server project for CDK development with Python.
-
 # Create EC2 Instance and install Jenkins Server in an existing Default VPC
 
 This project demonstrates how to:
