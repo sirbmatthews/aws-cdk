@@ -1,6 +1,6 @@
-from aws_cdk import CfnOutput, CfnParameter, Stack, Fn
-from aws_cdk.aws_ec2 import CloudFormationInit, InitCommand, InitConfig, InitPackage, InitService, InitServiceRestartHandle, Instance, InstanceType, KeyPair, KeyPairFormat, MachineImage, Peer, Port, SecurityGroup, SubnetConfiguration, SubnetType, Vpc
-from aws_cdk.aws_iam import ManagedPolicy, Role, ServicePrincipal
+from aws_cdk import CfnOutput, Stack
+from aws_cdk.aws_ec2 import CloudFormationInit, InitCommand, InitConfig, InitPackage, InitService, InitServiceRestartHandle, Instance, InstanceType, KeyPair, KeyPairFormat, MachineImage, Peer, Port, SecurityGroup, Vpc
+from aws_cdk.aws_iam import  Role, ServicePrincipal
 from constructs import Construct
 
 class JenkinsServerStack(Stack):
