@@ -1,6 +1,6 @@
 from aws_cdk import CfnOutput, CfnParameter, Stack, Fn
-from aws_cdk.aws_ec2 import CloudFormationInit, InitCommand, InitConfig, InitPackage, InitService, InitServiceRestartHandle, Instance, InstanceType, KeyPair, KeyPairFormat, MachineImage, Peer, Port, SecurityGroup, Vpc
-from aws_cdk.aws_iam import Role, ServicePrincipal
+from aws_cdk.aws_ec2 import CloudFormationInit, InitCommand, InitConfig, InitPackage, InitService, InitServiceRestartHandle, Instance, InstanceType, KeyPair, KeyPairFormat, MachineImage, Peer, Port, SecurityGroup, SubnetConfiguration, SubnetType, Vpc
+from aws_cdk.aws_iam import ManagedPolicy, Role, ServicePrincipal
 from constructs import Construct
 
 class JenkinsServerStack(Stack):
@@ -8,25 +8,21 @@ class JenkinsServerStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        # Parameters
-        key_name = CfnParameter(self, 'KeyName', description = 'Enter a key pair name')
-        instance_type = CfnParameter(self, 'InstanceType', description = 'Enter an instance type')
-        role_name = CfnParameter(self, 'RoleName', description = 'Enter a role name')
-        security_group_name = CfnParameter(self, 'SecurityGroupName', description = 'Enter a security group name')
-        
+        # Lookup a VPC
+        vpc = Vpc.from_lookup(self, 'VPC', is_default = True)
+
         # Creating a key pair
         jenkins_key_pair = KeyPair(
             self, 'KeyPair',
-            key_pair_name = key_name.value_as_string,
+            key_pair_name = 'JenkinsKeyPair',
             format = KeyPairFormat.PEM, 
         )
 
         # Create a Security Group
-        vpc = Vpc.from_lookup(self, 'VPC', is_default = True)
         jenkins_sg = SecurityGroup(
             self, 'JenkinsSeurityGroup',
             vpc = vpc,
-            security_group_name = security_group_name.value_as_string,
+            security_group_name = 'JenkinsSecurityGroup',
         )
 
         jenkins_sg.add_ingress_rule(
@@ -41,18 +37,18 @@ class JenkinsServerStack(Stack):
             description = 'Allow HTTP conenction on Port 8080'
         )
 
-        # Create instance role
+        # Create instance role and SSM Managed Policy
         instance_role = Role(
             self, 'InstanceRole',
             assumed_by = ServicePrincipal('ec2.amazonaws.com'),
-            role_name = role_name.value_as_string
+            role_name = 'JenkinsRole'
         )
 
         # Launching an Amazon EC2 instance
         jenkins_instance = Instance(
             self, 'JenkinsEC2Instance',
             instance_name = 'JenkinsEC2Instance',
-            instance_type = InstanceType(instance_type.value_as_string),
+            instance_type = InstanceType('t3.micro'),
             key_pair = jenkins_key_pair,
             machine_image = MachineImage.latest_amazon_linux2(),
             security_group = jenkins_sg,
