@@ -32,4 +32,4 @@ $ cdk destroy
 | Project | Description |
 |---------|-------------|
 | [jenkins_server](https://github.com/sirbmatthews/aws-cdk/tree/main/typescript/jenkins_server) | Shows the creation of an EC2 instance with a Jenkins Server in an existing Default VPC |
-| [vpc](https://github.com/sirbmatthews/aws-cdk/tree/main/Typescript/vpc) | Shows the creation of a VPC using L1 & L3 constructs |
+| [vpc](https://github.com/sirbmatthews/aws-cdk/tree/main/typescript/vpc) | Shows the creation of a VPC using L1 & L3 constructs |
