@@ -23,4 +23,4 @@ This repository contains projects in Python and TypeScript languages supported b
 
 # License <a name="License"></a>
 
-This repository is licensed under the Apache License 2.0.
+This repository is licensed under the [Apache License 2.0](https://github.com/sirbmatthews/aws-cdk/blob/main/LICENSE).
