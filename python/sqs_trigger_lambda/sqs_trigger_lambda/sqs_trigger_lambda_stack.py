@@ -1,4 +1,5 @@
 from aws_cdk import Duration, Fn, RemovalPolicy, Stack
+from aws_cdk.aws_logs import LogGroup, RetentionDays
 from aws_cdk.aws_dynamodb import Attribute, AttributeType, Table
 from aws_cdk.aws_ec2 import CloudFormationInit, InitCommand, InitConfig, InitFile, Instance, InstanceClass, InstanceType, MachineImage, Peer, Port, SecurityGroup, Vpc
 from aws_cdk.aws_iam import Effect, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal
@@ -21,65 +22,28 @@ class SqsTriggerLambdaStack(Stack):
             encryption = QueueEncryption.KMS_MANAGED,
             removal_policy = RemovalPolicy.DESTROY
         )
-        
-        # Create Lambda Role
-        lambda_role = Role(
-            self, 'LambdaExecutionRole',
-            role_name = 'LambdaExecutionRole',
-            assumed_by = ServicePrincipal('lambda.amazonaws.com'),
-            managed_policies = [ 
-                ManagedPolicy.from_aws_managed_policy_name('AmazonDynamoDBFullAccess'),
-                ManagedPolicy.from_aws_managed_policy_name('AmazonSQSFullAccess'),
-                ManagedPolicy.from_aws_managed_policy_name('AWSLambdaExecute'),
-                ManagedPolicy.from_aws_managed_policy_name('CloudWatchLogsFullAccess') 
-            ],
-            inline_policies = {
-                'root': PolicyDocument(
-                    statements = [
-                        PolicyStatement(
-                            effect = Effect.ALLOW,
-                            actions = [ "sqs:ChangeMessageVisibility", "sqs:DeleteMessage", "sqs:GetQueueAttributes", "sqs:GetQueueUrl", "sqs:ReceiveMessage"],
-                            resources = [ Fn.get_att(queue.node.default_child.logical_id, 'Arn').to_string() ]
-                        )
-                    ]
-                )
-            }
+
+        # Create Lambda Log Group
+        log_group = LogGroup(
+            self, 'LambdaLogGroup',
+            log_group_name = '/aws/lambda/SQSDynamoDB',
+            retention = RetentionDays.ONE_DAY,
+            removal_policy = RemovalPolicy.DESTROY
         )
         
-        # Stop lambda_event_source from creating a duplicate inline policy.
-        lambda_role = lambda_role.without_policy_updates() 
-
         # Create Lambda Function to triggered by SQS
         lambda_function = Function(
             self, 'SQSDynamoDB',
             code = Code.from_asset('src/lambda'),
             handler = 'lambda_function.lambda_handler',
             runtime = Runtime.PYTHON_3_12,
-            role = lambda_role,
-            function_name = 'SQSDynamoDB'
+            function_name = 'SQSDynamoDB',
+            log_group = log_group
         )
 
         # Create and add Trigger
         trigger = SqsEventSource(queue)
         lambda_function.add_event_source(trigger)
-
-        # Create EC2 role
-        ec2_role = Role(
-            self, 'EC2Role',
-            role_name = 'EC2Role',
-            assumed_by = ServicePrincipal('amazonaws.com'),
-            inline_policies = {
-                'root': PolicyDocument(
-                    statements = [
-                        PolicyStatement(
-                            effect = Effect.ALLOW,
-                            actions = [ "ec2:*", "sqs:*", "cloudwatch:*", "logs:*" ],
-                            resources = [ '*' ]
-                        )
-                    ]
-                )
-            }
-        )
 
         # Create EC2 with script that adds messages to the queue.
         vpc = Vpc.from_lookup(
@@ -116,7 +80,6 @@ class SqsTriggerLambdaStack(Stack):
                     ])
                 }
             ),
-            role = ec2_role,
             security_group = security_group
         )
 
@@ -130,4 +93,8 @@ class SqsTriggerLambdaStack(Stack):
             table_name = 'Messages',
             removal_policy = RemovalPolicy.DESTROY
         )
-
+        
+        log_group.grant_write(lambda_function)
+        queue.grant_consume_messages(lambda_function)
+        table.grant_write_data(lambda_function)
+        queue.grant_send_messages(instance)
