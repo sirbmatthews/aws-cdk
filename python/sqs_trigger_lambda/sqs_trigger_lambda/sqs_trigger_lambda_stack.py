@@ -1,8 +1,7 @@
-from aws_cdk import Duration, Fn, RemovalPolicy, Stack
+from aws_cdk import Duration, RemovalPolicy, Stack
 from aws_cdk.aws_logs import LogGroup, RetentionDays
 from aws_cdk.aws_dynamodb import Attribute, AttributeType, Table
-from aws_cdk.aws_ec2 import CloudFormationInit, InitCommand, InitConfig, InitFile, Instance, InstanceClass, InstanceType, MachineImage, Peer, Port, SecurityGroup, Vpc
-from aws_cdk.aws_iam import Effect, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal
+from aws_cdk.aws_ec2 import CloudFormationInit, InitCommand, InitConfig, InitFile, Instance, InstanceType, MachineImage, Peer, Port, SecurityGroup, Vpc
 from aws_cdk.aws_lambda import Code, Function, Runtime
 from aws_cdk.aws_lambda_event_sources import SqsEventSource
 from aws_cdk.aws_sqs import Queue, QueueEncryption
@@ -45,7 +44,7 @@ class SqsTriggerLambdaStack(Stack):
         trigger = SqsEventSource(queue)
         lambda_function.add_event_source(trigger)
 
-        # Create EC2 with script that adds messages to the queue.
+        # Lookup a VPC
         vpc = Vpc.from_lookup(
             self, 'VPC',
             vpc_name = 'Default VPC'
@@ -60,7 +59,7 @@ class SqsTriggerLambdaStack(Stack):
         )
         security_group.add_ingress_rule(Peer.any_ipv4(), Port.tcp(22), 'Allow SSH traffic on Port 22')
         
-        # Create EC2 Instance
+        # Create EC2 with script that adds messages to the queue.
         instance = Instance(
             self, 'EC2CreateMessage',
             instance_name = 'GenerateMessage',
