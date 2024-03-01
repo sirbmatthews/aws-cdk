@@ -33,3 +33,4 @@ $ cdk destroy
 |---------|-------------|
 | [jenkins_server](https://github.com/sirbmatthews/aws-cdk/tree/main/typescript/jenkins_server) | Shows the creation of an EC2 instance with a Jenkins Server in an existing Default VPC |
 | [vpc](https://github.com/sirbmatthews/aws-cdk/tree/main/typescript/vpc) | Shows the creation of a VPC using L1 & L3 constructs |
+| [sqs_trigger_lambda](https://github.com/sirbmatthews/aws-cdk/tree/main/typescript/sqs_trigger_lambda) | Shows how to trigger a Lambda function using SQS. |
