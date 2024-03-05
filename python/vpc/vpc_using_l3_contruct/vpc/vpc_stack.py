@@ -22,7 +22,7 @@ class VpcL3Stack(Stack):
                 SubnetConfiguration(
                     name = 'Public',
                     subnet_type = SubnetType.PUBLIC,
-                    cidr_mask =19, 
+                    cidr_mask = 20, 
                     map_public_ip_on_launch = True
                 ),
 
@@ -30,8 +30,16 @@ class VpcL3Stack(Stack):
                 SubnetConfiguration(
                     name = 'Private',
                     subnet_type = SubnetType.PRIVATE_WITH_EGRESS,
-                    cidr_mask = 19
+                    cidr_mask = 20
+                ),
+                
+                # Create Isolated Private Subnet
+                SubnetConfiguration(
+                    name = 'Isolated',
+                    subnet_type = SubnetType.PRIVATE_ISOLATED,
+                    cidr_mask = 20
                 )
+                
             ],
             
             # Set the number of NAT Gateways
@@ -50,3 +58,8 @@ class VpcL3Stack(Stack):
         subnet_list = vpc.select_subnets(subnet_type=SubnetType.PUBLIC)
         for i, subnet in enumerate(subnet_list.subnets):
             Tags.of(subnet).add('Name', 'PublicSubnet' + str(i + 1))
+            
+        # Add Tags to Isolated Subnets and route
+        subnet_list = vpc.select_subnets(subnet_type=SubnetType.PRIVATE_ISOLATED)
+        for i, subnet in enumerate(subnet_list.subnets):
+            Tags.of(subnet).add('Name', 'IsolatedSubnet' + str(i + 1))
