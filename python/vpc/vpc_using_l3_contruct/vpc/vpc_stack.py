@@ -1,5 +1,5 @@
 from aws_cdk import Stack, Tags
-from aws_cdk.aws_ec2 import DefaultInstanceTenancy, IpAddresses, RouterType, SubnetConfiguration, SubnetType, Vpc
+from aws_cdk.aws_ec2 import DefaultInstanceTenancy, IpAddresses, SubnetConfiguration, SubnetType, Vpc
 from constructs import Construct
 
 class VpcL3Stack(Stack):

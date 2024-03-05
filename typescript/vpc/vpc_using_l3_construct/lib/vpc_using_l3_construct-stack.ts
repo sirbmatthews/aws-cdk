@@ -1,5 +1,5 @@
 import { Stack, StackProps, Tags } from 'aws-cdk-lib';
-import { DefaultInstanceTenancy, IpAddresses, RouterType, SubnetConfiguration, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
+import { DefaultInstanceTenancy, IpAddresses, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { Construct } from 'constructs';
 
 
