@@ -22,9 +22,9 @@ class VpcStack(Stack):
         )
         
         # Subnets variables
-        public_subnet_cidr = ['10.0.0.0/20', '10.0.4.0/20', '10.0.8.0/20']
-        private_subnet_cidr = ['10.0.12.0/20', '10.0.16.0/20', '10.0.20.0/20']
-        iso_private_subnet_cidr = ['10.0.24.0/20', '10.0.28.0/20', '10.0.32.0/20']
+        public_subnet_cidr = ['10.0.0.0/20', '10.0.16.0/20', '10.0.32.0/20']
+        private_subnet_cidr = ['10.0.48.0/20', '10.0.64.0/20', '10.0.80.0/20']
+        iso_private_subnet_cidr = ['10.0.96.0/20', '10.0.112.0/20', '10.0.128.0/20']
         public_subnets = []
         private_subnets = []
         iso_private_subnets = []

@@ -20,9 +20,9 @@ export class VpcStack extends Stack {
 		)
     
     	// Subnets variables
-		const public_subnet_cidr = ['10.0.0.0/22', '10.0.4.0/22', '10.0.8.0/22']
-		const private_subnet_cidr = ['10.0.12.0/22', '10.0.16.0/22', '10.0.20.0/22']
-		const iso_private_subnet_cidr = ['10.0.24.0/22', '10.0.28.0/22', '10.0.32.0/22']
+		const public_subnet_cidr = ['10.0.0.0/20', '10.0.16.0/20', '10.0.32.0/20']
+        const private_subnet_cidr = ['10.0.48.0/20', '10.0.64.0/20', '10.0.80.0/20']
+        const iso_private_subnet_cidr = ['10.0.96.0/20', '10.0.112.0/20', '10.0.128.0/20']
 		let public_subnets = new Array()
 		let private_subnets = new Array()
 		let iso_private_subnets = new Array()
@@ -60,7 +60,7 @@ export class VpcStack extends Stack {
 		});
 
     	// Create Isolated Private Subnets
-		private_subnet_cidr.forEach((cidr, i) => {
+		iso_private_subnet_cidr.forEach((cidr, i) => {
 			iso_private_subnets.push(
 				new CfnSubnet(
 					this, "IsolatedPrivateSubnet" + (i+1).toString(),
