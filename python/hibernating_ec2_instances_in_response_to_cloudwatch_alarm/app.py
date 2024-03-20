@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+
+import aws_cdk as cdk
+
+from hibernating_ec2_instances_in_response_to_cloudwatch_alarm.hibernating_ec2_instance_stack import HibernatingEc2InstanceStack
+from hibernating_ec2_instances_in_response_to_cloudwatch_alarm.hibernating_ec2_instances_in_response_to_cloudwatch_alarm_stack import HibernatingEc2InstancesInResponseToCloudwatchAlarmStack
+
+
+app = cdk.App()
+
+HibernatingEc2InstanceStack(app, 'HibernatingEc2InstanceStack')
+HibernatingEc2InstancesInResponseToCloudwatchAlarmStack(app, 'HibernatingEc2InstancesInResponseToCloudwatchAlarmStack')
+
+app.synth()
