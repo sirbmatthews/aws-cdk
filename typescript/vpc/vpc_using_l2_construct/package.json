@@ -1,8 +1,8 @@
 {
-  "name": "vpc_using_l3_construct",
+  "name": "vpc_using_l2_construct",
   "version": "0.1.0",
   "bin": {
-    "vpc_using_l3_construct": "bin/vpc_using_l3_construct.js"
+    "vpc_using_l2_construct": "bin/vpc_using_l2_construct.js"
   },
   "scripts": {
     "build": "tsc",

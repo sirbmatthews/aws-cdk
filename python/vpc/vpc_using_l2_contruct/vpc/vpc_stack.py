@@ -2,7 +2,7 @@ from aws_cdk import Stack, Tags
 from aws_cdk.aws_ec2 import DefaultInstanceTenancy, IpAddresses, SubnetConfiguration, SubnetType, Vpc
 from constructs import Construct
 
-class VpcL3Stack(Stack):
+class VpcStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)

@@ -1,5 +1,5 @@
 {
-  "app": "npx ts-node --prefer-ts-exts bin/vpc_using_l3_construct.ts",
+  "app": "npx ts-node --prefer-ts-exts bin/vpc_using_l2_construct.ts",
   "watch": {
     "include": [
       "**"

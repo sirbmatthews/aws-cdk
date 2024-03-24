@@ -33,5 +33,5 @@ $ cdk destroy
 |---------|-------------|
 | [hibernating_ec2_instances_in_response_to_cloudwatch_alarm](https://github.com/sirbmatthews/aws-cdk/tree/main/typescript/hibernating_ec2_instances_in_response_to_cloudwatch_alarm) | Demonstrates the creation of a solution that will find idle instances using an Amazon CloudWatch alarm that monitors the instance’s CPU usage. When the CPU usage consistently drops below the alarm’s threshold, the alarm enters the ALARM state and raises an event used to identify the instance and trigger hibernation.
 | [jenkins_server](https://github.com/sirbmatthews/aws-cdk/tree/main/typescript/jenkins_server) | Shows the creation of an EC2 instance with a Jenkins Server in an existing Default VPC |
-| [vpc](https://github.com/sirbmatthews/aws-cdk/tree/main/typescript/vpc) | Shows the creation of a VPC using L1 & L3 constructs |
+| [vpc](https://github.com/sirbmatthews/aws-cdk/tree/main/typescript/vpc) | Shows the creation of a VPC using L1 & L2 constructs |
 | [sqs_trigger_lambda](https://github.com/sirbmatthews/aws-cdk/tree/main/typescript/sqs_trigger_lambda) | Shows how to trigger a Lambda function using SQS. |

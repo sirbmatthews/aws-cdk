@@ -1,4 +1,4 @@
-# Create a VPC uisng L3 construct
+# Create a VPC uisng L2 construct
 
 This project demonstrates how to:
 
